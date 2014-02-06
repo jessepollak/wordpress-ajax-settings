@@ -1,0 +1,28 @@
+div.ajax-settings-updated {
+    $size: 20px;
+    width: $size;
+    height: $size;
+    background: white;
+    position: absolute;
+    border-radius: 20px;
+    right: 0;
+    top: 0;
+    margin-left: 10px;
+    margin-top: 4px;
+    opacity: 1;
+    animation: blink 2s infinite;
+    &.success {
+        background-color: #2ecc71;
+        transition: 500ms;
+    }
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .4;
+    }
+}

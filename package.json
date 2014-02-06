@@ -1,0 +1,32 @@
+{
+  "name": "ajax-settings",
+  "title": "Ajax for the WordPress Settings API",
+  "description": "A drop in plugin that makes your plugin settings page work over AJAX.",
+  "version": "0.0.1",
+  "repository": "http://github.com/jessepollak/ajax-settings",
+  "author": {
+    "name": "Jesse Pollak",
+    "email": "jpollak92@gmail.com",
+    "url": "http://jessepollak.me"
+  },
+  "devDependencies": {
+    "coffee-script": "~1.7.1",
+    "gulp-coffee": "~1.4.1",
+    "gulp-util": "~2.2.14",
+    "gulp-livereload": "~0.3.1",
+    "gulp-concat": "~2.1.7",
+    "gulp-rename": "~0.2.2",
+    "tiny-lr": "0.0.5",
+    "gulp-minify-css": "~0.2.0",
+    "gulp-clean": "~0.2.4",
+    "gulp-autoprefixer": "0.0.6",
+    "gulp-notify": "~0.4.0",
+    "gulp-uglify": "~0.2.0",
+    "gulp-cache": "~0.1.1",
+    "gulp-sass": "~0.6.0",
+    "gulp-coffeelint": "~0.2.0",
+    "gulp-filter": "~0.2.1",
+    "gulp-imagemin": "~0.1.5"
+  },
+  "keywords": []
+}

@@ -1,4 +1,4 @@
-Easy ajax settings page for your WordPress plugin
+Ajax Settings
 ===================================
 
 This library allows you to make your plugin's settings page work entirely over AJAX if you use the WordPress Settings API and follow standard protocols.

@@ -37,7 +37,7 @@
         serialized = {}
         for obj in $(this).serializeArray()
             serialized[obj.name] = obj.value
-        serializeda
+        serialized
 
     AjaxSettingsModel.extend = Backbone.Model.extend
     this.AjaxSettingsModel = AjaxSettingsModel

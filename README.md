@@ -16,6 +16,7 @@ function initialize_ajax_settings() {
   new AjaxSettings(array(
     "options_name" => YOUR_SETTINGS_API_OPTION_NAME,
     "base_url" => URL_TO_THE_ajax-settings_FOLDER
+  ));
 }
 ```
 

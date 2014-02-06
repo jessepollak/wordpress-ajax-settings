@@ -1,20 +1,10 @@
 <?php
 
-if (!defined('AJAX_SETTINGS_DEBUG')) {
-    define('AJAX_SETTINGS_DEBUG', false);
-}
-
 class AjaxSettings {
     const VERSION = '0.0.1';
 
     function __construct( $opts=array() ) {
         $this->options = $opts;
-
-        if (AJAX_SETTINGS_DEBUG) {
-            $this->BASE_URL = trailingslashit(plugins_url('wpclef')) . "includes/lib/ajax-settings/";
-        } else {
-            $this->BASE_URL = trailingslashit(plugin_dir_url(__FILE__));
-        }
 
         $this->enqueue_scripts();
         $this->enqueue_styles();
@@ -29,7 +19,7 @@ class AjaxSettings {
         $ident = $this->name() . 'ajax-settings';
         wp_register_script(
             $ident,
-            $this->BASE_URL  . "js/ajax-settings.min.js",
+            $this->options['base_url']  . "js/ajax-settings.min.js",
             array('backbone'),
             $this::VERSION,
             TRUE
@@ -42,7 +32,7 @@ class AjaxSettings {
         $ident = $this->name() . 'ajax-settings';
         wp_register_style(
             $ident,
-            $this->BASE_URL . 'css/ajax-settings.min.css',
+            $this->options['base_url'] . 'css/ajax-settings.min.css',
             false,
             $this::VERSION
         );
@@ -51,7 +41,6 @@ class AjaxSettings {
 
     function handle_settings_save() {
         $settings = json_decode(file_get_contents( "php://input" ), true);
-        error_log(print_r($settings, true));
         $option_page = $settings['option_page'];
 
         if (!wp_verify_nonce($settings['_wpnonce'], $option_page . "-options")) {

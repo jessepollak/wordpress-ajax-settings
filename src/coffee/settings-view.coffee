@@ -36,7 +36,9 @@
 
         startUpdating: (obj, data) ->
             for name, x of obj.changed
-                @settingUpdateSent(@model.findInput(name))
+                inp = @model.findInput(name)
+                inp.val(x)
+                @settingUpdateSent(inp)
 
         updated: (obj, data) ->
             for name, x of obj.changed

@@ -8,7 +8,7 @@
             "click input[type='submit']:not(.ajax-ignore)": "persistChanges"
 
         modelClass: AjaxSettingsModel
-        formSelector: 'form[action="options.php"]'
+        formSelector: ajaxSetOpt.formSelector || 'form[action="options.php"]'
         updatedEls: {}
 
         initialize: (@opts) ->
@@ -68,8 +68,8 @@
     this.AjaxSettingsView = AjaxSettingsView
 
     $(document).ready () ->
-        if ajaxSettingsOptions.initialize
-            window["#{ajaxSettingsOptions.options_name}AjaxSettingsView"] = new AjaxSettingsView ajaxSettingsOptions
+        if ajaxSetOpt.initialize
+            window["#{ajaxSetOpt.options_name}AjaxSettingsView"] = new AjaxSettingsView ajaxSettingsOptions
 
     $.fn.leftPositionWithPadding = () ->
         pos = this.position().left

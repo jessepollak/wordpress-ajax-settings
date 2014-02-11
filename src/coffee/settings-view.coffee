@@ -5,18 +5,17 @@
         events:
             "change input:not(.ajax-ignore)": "persistChanges"
             "change select:not(.ajax-ignore)": "persistChanges"
-            "click input[type='submit']:not(.ajax-ignore)": "persistChanges"
 
         modelClass: AjaxSettingsModel
         formSelector: ajaxSetOpt.formSelector || 'form[action="options.php"]'
         updatedEls: {}
 
         initialize: (@opts) ->
-            @setElement($(@formSelector));
+            @setElement($(@formSelector))
             @hide()
 
             @model = new @modelClass(
-                {}, 
+                {},
                 { form: @$el, parse: true, name: @opts.options_name}
             )
             @listenTo @model, 'change', @render
@@ -45,17 +44,22 @@
                 @settingUpdateSuccess(@model.findInput(name))
 
         settingUpdateSent: (inp) ->
-            return if @updatedEls[inp]
+            return if not inp.length || @updatedEls[inp]
+
             el = @updatedEls[inp] = $('<div class="ajax-settings-updated">')
                 .css
-                    left: inp.leftPositionWithPadding()
+                    position: 'absolute'
+                    left: inp.outerWidth() + inp.position().left
                     top: inp.position().top
-                    display: 'none'
-                .insertAfter inp
-            el.show()
+                    visibility: 'hidden'
+                .insertBefore inp
+
+            el.css
+                visibility: 'visible',
+                marginTop: (inp.outerHeight() - el.outerHeight()) / 2
 
         settingUpdateSuccess: (inp) ->
-            return if not @updatedEls[inp]
+            return if not inp.length || not @updatedEls[inp]
             $el = @updatedEls[inp]
             $el.addClass('success')
             setTimeout (() -> $el.remove()), 1000
@@ -69,7 +73,8 @@
 
     $(document).ready () ->
         if ajaxSetOpt.initialize
-            window["#{ajaxSetOpt.options_name}AjaxSettingsView"] = new AjaxSettingsView ajaxSettingsOptions
+            name = "#{ajaxSetOpt.options_name}AjaxSettingsView"
+            window[name] = new AjaxSettingsView ajaxSettingsOptions
 
     $.fn.leftPositionWithPadding = () ->
         pos = this.position().left

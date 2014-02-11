@@ -22,6 +22,7 @@
         saveSuccess: (obj, data) ->
             @saving = false
         saveError: (obj, data) ->
+            @saving = false
             console.log obj, data
 
         findInput: (name, opts={}) ->
@@ -29,7 +30,9 @@
                 @_is = {}
 
             if !@_is[name]
-                @_is[name] = @$form.find('input, select').filter("[name='#{name}']")
+                @_is[name] = @$form
+                    .find('input, select')
+                    .filter("[name='#{name}']")
 
             @_is[name]
 
@@ -42,4 +45,4 @@
     AjaxSettingsModel.extend = Backbone.Model.extend
     this.AjaxSettingsModel = AjaxSettingsModel
 
-).call(this, jQuery, Backbone);
+).call(this, jQuery, Backbone)

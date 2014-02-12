@@ -18,9 +18,6 @@
                 {},
                 { form: @$el, parse: true, name: @opts.options_name}
             )
-            @listenTo @model, 'change', @render
-            @listenTo @model, 'change', @startUpdating
-            @listenTo @model, 'sync', @updated
 
         hide: () ->
             @$el.hide()
@@ -28,6 +25,9 @@
         render: () ->
             if @$el.is(':not(:visible)')
                 @$el.fadeIn()
+                @listenTo @model, 'change', @render
+                @listenTo @model, 'change', @startUpdating
+                @listenTo @model, 'sync', @updated
 
         persistChanges: (e) ->
             e.preventDefault()

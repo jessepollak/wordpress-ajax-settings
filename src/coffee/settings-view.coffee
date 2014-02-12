@@ -24,10 +24,17 @@
 
         render: () ->
             if @$el.is(':not(:visible)')
+                @refresh()
                 @$el.fadeIn()
                 @listenTo @model, 'change', @render
                 @listenTo @model, 'change', @startUpdating
                 @listenTo @model, 'sync', @updated
+
+        refresh: () ->
+            for inputName, v of @model.attributes
+                inp = @model.findInput inputName
+                if inp
+                    inp.val v
 
         persistChanges: (e) ->
             e.preventDefault()

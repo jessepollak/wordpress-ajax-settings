@@ -45,11 +45,17 @@ class AjaxSettings {
     function handle_settings_save() {
         $settings = json_decode(file_get_contents( "php://input" ), true);
         $option_page = $settings['option_page'];
+        $is_network_wide = isset($_REQUEST['network_wide']) && $_REQUEST['network_wide'];
 
         if (!wp_verify_nonce($settings['_wpnonce'], $option_page . "-options")) {
             wp_die(__('Cheatin&#8217; uh?'));
         }
 
+        // if it's network request, we want to check that the current user is
+        // a network admin
+        if ($is_network_wide && !is_super_admin()) wp_die(__('Cheatin&#8217; uh?'));
+
+        // verify that the user has the permissions to edit the clef page
         $capability = 'manage_options';
         $capability = apply_filters( "option_page_capability_{$option_page}", $capability );
         if ( !current_user_can( $capability ) )
@@ -73,7 +79,7 @@ class AjaxSettings {
             } 
         }
 
-        if ($this->options['network_wide']) {
+        if ($network_wide) {
             update_site_option($this->name(), $to_be_saved);
         } else {
             update_option($this->name(), $to_be_saved);

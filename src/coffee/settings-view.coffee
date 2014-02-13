@@ -7,16 +7,16 @@
             "change select:not(.ajax-ignore)": "persistChanges"
 
         modelClass: AjaxSettingsModel
-        formSelector: ajaxSetOpt.formSelector || 'form[action="options.php"]'
         updatedEls: {}
 
         initialize: (@opts) ->
+            @formSelector = @opts.formSelector || 'form[action="options.php"]'
             @setElement($(@formSelector))
             @hide()
 
             @model = new @modelClass(
                 {},
-                { form: @$el, parse: true, name: @opts.options_name}
+                _.extend { form: @$el, parse: true,}, @opts
             )
 
         hide: () ->
@@ -81,7 +81,7 @@
     $(document).ready () ->
         if ajaxSetOpt.initialize
             name = "#{ajaxSetOpt.options_name}AjaxSettingsView"
-            window[name] = new AjaxSettingsView ajaxSettingsOptions
+            window[name] = new AjaxSettingsView ajaxSetOpt
 
     $.fn.leftPositionWithPadding = () ->
         pos = this.position().left

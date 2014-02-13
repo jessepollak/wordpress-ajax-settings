@@ -4,8 +4,12 @@
         parse: (data, options)->
             # initialize
             if options.form
-                @optionsName = options.name
+                @optionsName = options.options_name
                 @url = ajaxurl + "?action=ajax_settings_save_#{@optionsName}"
+                
+                if options.network_wide
+                    @url += "&network_wide=true"
+                    
                 @$form = options.form
                 _.extend data, @$form.serializeObject()
         isNew: () -> false

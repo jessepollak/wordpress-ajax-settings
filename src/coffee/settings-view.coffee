@@ -19,16 +19,18 @@
                 _.extend { form: @$el, parse: true,}, @opts
             )
 
+            @listenTo @model, 'change', @render
+            @listenTo @model, 'change', @startUpdating
+            @listenTo @model, 'sync', @updated
+
         hide: () ->
             @$el.hide()
 
         render: () ->
-            if @$el.is(':not(:visible)')
-                @refresh()
-                @$el.fadeIn()
-                @listenTo @model, 'change', @render
-                @listenTo @model, 'change', @startUpdating
-                @listenTo @model, 'sync', @updated
+            @refresh()
+
+        show: ->
+            @$el.fadeIn()
 
         refresh: () ->
             for inputName, v of @model.attributes

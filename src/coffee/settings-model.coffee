@@ -5,7 +5,10 @@
             # initialize
             if options.form
                 @optionsName = options.options_name
-                @url = ajaxurl + "?action=ajax_settings_save_#{@optionsName}"
+                if options.url
+                    @url = options.url
+                else
+                    @url = ajaxurl + "?action=ajax_settings_save_#{@optionsName}"
                 
                 if options.network_wide
                     @url += "&network_wide=true"

@@ -8,10 +8,12 @@
 
         modelClass: AjaxSettingsModel
         updatedEls: {}
+        el: 'form[action="options.php"]'
 
         initialize: (@opts) ->
-            @formSelector = @opts.formSelector || 'form[action="options.php"]'
-            @setElement($(@formSelector))
+            if @opts.formSelector
+                @setElement($(opts.formSelector))
+
             @hide()
 
             @model = new @modelClass(
@@ -27,16 +29,13 @@
             @$el.hide()
 
         render: () ->
-            @refresh()
-
-        show: ->
-            @$el.fadeIn()
-
-        refresh: () ->
             for inputName, v of @model.attributes
                 inp = @model.findInput inputName
                 if inp
                     inp.val v
+
+        show: () ->
+            @$el.fadeIn()
 
         persistChanges: (e) ->
             e.preventDefault()

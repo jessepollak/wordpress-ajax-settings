@@ -2,13 +2,16 @@
     Backbone.emulateHTTP = true
 
     AjaxSettingsView = Backbone.View.extend {
+        messageTemplate: _.template "<div class='updated ajax-settings-msg'>\
+                            <p><%= message %></p>\
+                         </div>"
         events:
             "change input:not(.ajax-ignore)": "persistChanges"
             "change select:not(.ajax-ignore)": "persistChanges"
 
         modelClass: AjaxSettingsModel
-        updatedEls: {}
         el: 'form[action="options.php"]'
+        successEls: {}
 
         initialize: (@opts) ->
             if @opts.formSelector
@@ -43,35 +46,24 @@
 
         startUpdating: (obj, data) ->
             for name, x of obj.changed
-                inp = @model.findInput(name)
-                inp.val(x)
-                @settingUpdateSent(inp)
+                @settingUpdateSent(@model.findInput(name))
 
         updated: (obj, data) ->
+            @render()
             for name, x of obj.changed
                 @settingUpdateSuccess(@model.findInput(name))
 
         settingUpdateSent: (inp) ->
-            return if not inp.length || @updatedEls[inp]
-
-            el = @updatedEls[inp] = $('<div class="ajax-settings-updated">')
-                .css
-                    position: 'absolute'
-                    left: inp.outerWidth() + inp.position().left
-                    top: inp.position().top
-                    visibility: 'hidden'
-                .insertBefore inp
-
-            el.css
-                visibility: 'visible',
-                marginTop: (inp.outerHeight() - el.outerHeight()) / 2
 
         settingUpdateSuccess: (inp) ->
-            return if not inp.length || not @updatedEls[inp]
-            $el = @updatedEls[inp]
-            $el.addClass('success')
-            setTimeout (() -> $el.remove()), 1000
-            delete @updatedEls[inp]
+            return if not inp.length || @successEls[inp]
+            $el = $(@messageTemplate message: "Setting saved.").hide()
+            @successEls[inp] = $el.insertAfter(inp).slideDown()
+            setTimeout(
+                () => 
+                    $el.slideUp()
+                    delete @successEls[inp]
+            , 2000)
 
     }, {
         extend: Backbone.View.extend

@@ -73,7 +73,6 @@
                 return
 
             for inputName, msg of data.responseJSON.data.errors
-                console.log inputName, msg
                 @settingsUpdateError(
                     @model.findInput("#{@opts.options_name}[#{inputName}]"),
                     msg

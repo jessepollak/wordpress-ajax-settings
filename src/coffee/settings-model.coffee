@@ -30,7 +30,6 @@
             @saving = false
         saveError: (obj, data) ->
             @saving = false
-            console.log obj, data
 
         findInput: (name, opts={}) ->
             if !@_is

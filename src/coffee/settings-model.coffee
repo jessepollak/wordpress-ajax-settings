@@ -15,6 +15,7 @@
                     
                 @$form = options.form
                 _.extend data, @$form.serializeObject()
+
         isNew: () -> false
         update: (el) ->
             $el = $(el)

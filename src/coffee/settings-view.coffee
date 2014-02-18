@@ -2,7 +2,7 @@
     Backbone.emulateHTTP = true
 
     AjaxSettingsView = Backbone.View.extend {
-        messageTemplate: _.template "<div class='updated ajax-settings-msg'>\
+        messageTemplate: _.template "<div class='<%=type%> ajax-settings-msg'>\
                             <p><%= message %></p>\
                          </div>"
         events:
@@ -12,6 +12,9 @@
         modelClass: AjaxSettingsModel
         el: 'form[action="options.php"]'
         successEls: {}
+        errorEls: {}
+        genericErrorMessage: "Something went wrong, \
+        please refresh and try again."
 
         initialize: (@opts) ->
             if @opts.formSelector
@@ -27,6 +30,8 @@
             @listenTo @model, 'change', @render
             @listenTo @model, 'change', @startUpdating
             @listenTo @model, 'sync', @updated
+            @listenTo @model, 'error', @error
+            @listenTo @model, "change", @clearErrors
 
         hide: () ->
             @$el.hide()
@@ -51,19 +56,65 @@
         updated: (obj, data) ->
             @render()
             for name, x of obj.changed
+                console.log @model.findInput(name), name
                 @settingUpdateSuccess(@model.findInput(name))
+
+        error: (obj, data) ->
+            if !data.responseJSON || !data.responseJSON.data
+                @showMessage 
+                    message: @genericErrorMessage
+                    type: "error"
+                return
+
+            if !data.responseJSON.data.errors && data.responseJSON.data.error
+                @showMessage
+                    message: data.responseJSON.data.error
+                    type: "error"
+                return
+
+            for inputName, msg of data.responseJSON.data.errors
+                console.log inputName, msg
+                @settingsUpdateError( 
+                    @model.findInput("#{@opts.options_name}[#{inputName}]"), 
+                    msg
+                )
+
+        clearErrors: (model, data) ->
+            # when a model changes, if it previously was error'd, clear them
+            # so we can reshow them (or do away with them) on model save
+            if @globalError
+                @globalError.remove()
+                @globalError = null
+
+            for inputName, v of model.changed
+                inp = @model.findInput(inputName)
+                if @errorEls[inp]
+                    @errorEls[inp].remove()
+                    @errorEls[inp] = null
 
         settingUpdateSent: (inp) ->
 
         settingUpdateSuccess: (inp) ->
             return if not inp.length || @successEls[inp]
-            $el = $(@messageTemplate message: "Setting saved.").hide()
+            $el = $(@messageTemplate message: "Setting saved.", type: "updated").hide()
             @successEls[inp] = $el.insertAfter(inp).slideDown()
             setTimeout(
                 () => 
                     $el.slideUp()
                     delete @successEls[inp]
             , 2000)
+
+        settingsUpdateError: (inp, msg) ->
+            if @errorEls[inp]
+                @errorEls[inp].find('p').html msg
+            else
+                $el = $(@messageTemplate message: msg, type: "error").hide()
+                @errorEls[inp] = $el.insertAfter(inp).slideDown()
+
+        showMessage: (opts) ->
+            $el = $(@messageTemplate opts).hide()
+            @globalError = $el.prependTo(@$el).slideDown() 
+            $('html, body').animate scrollTop: @$el.scrollTop(), "slow"
 
     }, {
         extend: Backbone.View.extend

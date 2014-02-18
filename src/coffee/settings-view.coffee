@@ -15,6 +15,7 @@
         errorEls: {}
         genericErrorMessage: "Something went wrong, \
         please refresh and try again."
+        successMessageDisplayTime: 3000
 
         initialize: (@opts) ->
             if @opts.formSelector
@@ -61,7 +62,7 @@
 
         error: (obj, data) ->
             if !data.responseJSON || !data.responseJSON.data
-                @showMessage 
+                @showMessage
                     message: @genericErrorMessage
                     type: "error"
                 return
@@ -74,8 +75,8 @@
 
             for inputName, msg of data.responseJSON.data.errors
                 console.log inputName, msg
-                @settingsUpdateError( 
-                    @model.findInput("#{@opts.options_name}[#{inputName}]"), 
+                @settingsUpdateError(
+                    @model.findInput("#{@opts.options_name}[#{inputName}]"),
                     msg
                 )
 
@@ -96,13 +97,16 @@
 
         settingUpdateSuccess: (inp) ->
             return if not inp.length || @successEls[inp]
-            $el = $(@messageTemplate message: "Setting saved.", type: "updated").hide()
+            $el = $(@messageTemplate
+                message: "Setting saved.",
+                type: "updated"
+            ).hide()
             @successEls[inp] = $el.insertAfter(inp).slideDown()
             setTimeout(
-                () => 
+                () =>
                     $el.slideUp()
                     delete @successEls[inp]
-            , 2000)
+            , @successMessageDisplayTime)
 
         settingsUpdateError: (inp, msg) ->
             if @errorEls[inp]
@@ -113,7 +117,7 @@
 
         showMessage: (opts) ->
             $el = $(@messageTemplate opts).hide()
-            @globalError = $el.prependTo(@$el).slideDown() 
+            @globalError = $el.prependTo(@$el).slideDown()
             $('html, body').animate scrollTop: @$el.scrollTop(), "slow"
 
     }, {

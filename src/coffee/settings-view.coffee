@@ -57,7 +57,6 @@
         updated: (obj, data) ->
             @render()
             for name, x of obj.changed
-                console.log @model.findInput(name), name
                 @settingUpdateSuccess(@model.findInput(name))
 
         error: (obj, data) ->

@@ -13,8 +13,7 @@
         el: 'form[action="options.php"]'
         successEls: {}
         errorEls: {}
-        genericErrorMessage: "Something went wrong, \
-        please refresh and try again."
+        genericErrorMessage: "Something went wrong: "
         successMessageDisplayTime: 3000
 
         initialize: (@opts) ->
@@ -62,7 +61,7 @@
         error: (obj, data) ->
             if !data.responseJSON || !data.responseJSON.data
                 @showMessage
-                    message: @genericErrorMessage
+                    message: "#{@genericErrorMessage} #{data.responseText}"
                     type: "error"
                 return
 

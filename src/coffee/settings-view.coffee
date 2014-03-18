@@ -8,6 +8,7 @@
         events:
             "change input:not(.ajax-ignore)": "persistChanges"
             "change select:not(.ajax-ignore)": "persistChanges"
+            "change textarea:not(.ajax-ignore)": "persistChanges"
 
         modelClass: AjaxSettingsModel
         el: 'form[action="options.php"]'

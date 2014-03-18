@@ -37,7 +37,7 @@
 
             if !@_is[name]
                 @_is[name] = @$form
-                    .find('input, select')
+                    .find('input, select, textarea')
                     .filter("[name='#{name}']")
 
             @_is[name]

@@ -41,7 +41,10 @@
             for inputName, v of @model.attributes
                 inp = @model.findInput inputName
                 if inp
-                    inp.val v
+                    if inp.is(':checkbox')
+                        inp.prop 'checked', parseInt(v)
+                    else
+                        inp.val v
 
         show: () ->
             @$el.fadeIn()

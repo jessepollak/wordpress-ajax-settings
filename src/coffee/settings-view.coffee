@@ -12,8 +12,6 @@
 
         modelClass: AjaxSettingsModel
         el: 'form[action="options.php"]'
-        successEls: {}
-        errorEls: {}
         genericErrorMessage: "Something went wrong: "
         successMessageDisplayTime: 3000
 
@@ -90,31 +88,29 @@
 
             for inputName, v of model.changed
                 inp = @model.findInput(inputName)
-                if @errorEls[inp]
-                    @errorEls[inp].remove()
-                    @errorEls[inp] = null
-
+                if inp.data 'errorEl'
+                    inp.data('errorEl').remove()
+                    inp.data 'errorEl', null
         settingUpdateSent: (inp) ->
-
         settingUpdateSuccess: (inp) ->
-            return if not inp.length || @successEls[inp]
+            return if not inp.length || inp.data('successEl')
             $el = $(@messageTemplate
                 message: "Setting saved.",
                 type: "updated"
             ).hide()
-            @successEls[inp] = $el.insertAfter(inp).slideDown()
+            inp.data 'successEl', $el.insertAfter(inp).slideDown()
             setTimeout(
-                () =>
+                () ->
                     $el.slideUp()
-                    delete @successEls[inp]
+                    inp.data 'successEl', null
             , @successMessageDisplayTime)
 
         settingsUpdateError: (inp, msg) ->
-            if @errorEls[inp]
-                @errorEls[inp].find('p').html msg
+            if inp.data 'errorEl'
+                inp.data('errorEl').find('p').html msg
             else
                 $el = $(@messageTemplate message: msg, type: "error").hide()
-                @errorEls[inp] = $el.insertAfter(inp).slideDown()
+                inp.data 'errorEl', $el.insertAfter(inp).slideDown()
 
         showMessage: (opts) ->
             $el = $(@messageTemplate opts).hide()

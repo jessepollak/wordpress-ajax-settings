@@ -1,6 +1,4 @@
 (($, Backbone) ->
-    Backbone.emulateHTTP = true
-
     AjaxSettingsView = Backbone.View.extend {
         messageTemplate: _.template "<div class='<%=type%> ajax-settings-msg'>\
                             <p><%= message %></p>\

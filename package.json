@@ -23,10 +23,13 @@
     "gulp-notify": "~0.4.0",
     "gulp-uglify": "~0.2.0",
     "gulp-cache": "~0.1.1",
-    "gulp-sass": "~0.6.0",
+    "gulp-sass": "~2.0.1",
     "gulp-coffeelint": "~0.2.0",
     "gulp-filter": "~0.2.1",
-    "gulp-imagemin": "~0.1.5"
+    "gulp-imagemin": "~0.1.5",
+    "gulp": "^3.9.0"
   },
-  "keywords": []
+  "keywords": [],
+  "dependencies": {
+  }
 }

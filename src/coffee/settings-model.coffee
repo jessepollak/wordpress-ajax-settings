@@ -1,6 +1,10 @@
 (($, Backbone) ->
     AjaxSettingsModel = Backbone.Model.extend
         url: ajaxurl + "?action=ajax_settings_save"
+        sync: (method, model, options) ->
+            options = options || {}
+            options.emulateHTTP = true
+            Backbone.Model.prototype.sync.call(this, method, model, options)
         parse: (data, options)->
             # initialize
             if options.form
@@ -8,10 +12,10 @@
                 @url = ajaxurl + "?action=ajax_settings_save_#{@optionsName}"
                 if options.url
                     @url = options.url
-                
+
                 if options.network_wide
                     @url += "&network_wide=true"
-                    
+
                 @$form = options.form
                 _.extend data, @$form.serializeObject()
 

@@ -16,9 +16,9 @@
 
             Backbone.Model.prototype.sync.call(this, method, model, options)
         parse: (data, options)->
-            @options = options
             # initialize
             if options.form
+                @options = options
                 @url = "#{ajaxurl}?action=ajax_settings_save_#{@options.options_name}"
                 if @options.url
                     @url = @options.url

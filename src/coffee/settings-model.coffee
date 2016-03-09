@@ -9,7 +9,7 @@
             options.contentType = 'application/json'
 
             data = model.toJSON()
-            data.action = "ajax_settings_save_#{@options.options_name}"
+            data = @addActionToData(data)
             if @options.network_wide
                 data.network_wide = true
             options.data = JSON.stringify(data)
@@ -29,6 +29,9 @@
                 @$form = @options.form
                 _.extend data, @$form.serializeObject()
 
+        addActionToData: (data) ->
+            data.action = "ajax_settings_save_#{@options.options_name}"
+            data
         isNew: () -> false
         update: (el) ->
             $el = $(el)

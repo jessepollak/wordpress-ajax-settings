@@ -2,7 +2,7 @@
   "name": "ajax-settings",
   "title": "Ajax for the WordPress Settings API",
   "description": "A drop in plugin that makes your plugin settings page work over AJAX.",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "repository": "http://github.com/jessepollak/ajax-settings",
   "author": {
     "name": "Jesse Pollak",

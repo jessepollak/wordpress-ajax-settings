@@ -6,13 +6,15 @@
             options = options || {}
             options.emulateHTTP = true
 
-            options.contentType = 'application/json'
-
             data = model.toJSON()
             data = @addActionToData(data)
             if @options.network_wide
                 data.network_wide = true
-            options.data = JSON.stringify(data)
+
+            options.data = jQuery.param(data)
+            options.dataType = 'json'
+            options.contentType = 'application/x-www-form-urlencoded; charset=UTF-8'
+            options.processData = false
 
             Backbone.Model.prototype.sync.call(this, method, model, options)
         parse: (data, options)->

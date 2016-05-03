@@ -38,7 +38,7 @@ class AjaxSettings {
         $ident = $this->identifier();
         wp_register_style(
             $ident,
-            $this->options['base_url'] . 'css/ajax-settings.min.css',
+            $this->options['base_url'] . 'css/ajax-settings.v'  . self::VERSION . 'min.css',
             false,
             self::VERSION
         );

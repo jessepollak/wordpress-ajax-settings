@@ -1,4 +1,5 @@
-var gulp = require('gulp'),
+var packageJSON = require('./package.json'),
+    gulp = require('gulp'),
     gutil = require('gulp-util'),
     sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
@@ -34,7 +35,7 @@ gulp.task('coffee', function() {
         .pipe(coffee({bare: true})).on('error', gutil.log)
         .pipe(rename({suffix: '.min'}))
         .pipe(uglify({ sourceMap: true }))
-        .pipe(concat("ajax-settings.min.js"))
+        .pipe(concat("ajax-settings.v" + packageJSON.version + ".min.js"))
         .pipe(gulp.dest('dist/js/'))
         .pipe(livereload(server))
         .pipe(notify({ message: "Coffeescript compiled." }));

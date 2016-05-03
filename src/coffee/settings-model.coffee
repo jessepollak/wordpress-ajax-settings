@@ -11,9 +11,11 @@
             if @options.network_wide
                 data.network_wide = true
 
-            options.data = jQuery.param(data)
+            options.data = $.param(data)
             options.dataType = 'json'
+            # coffeelint: disable=max_line_length
             options.contentType = 'application/x-www-form-urlencoded; charset=UTF-8'
+            # coffeelint: enable=max_line_length
             options.processData = false
 
             Backbone.Model.prototype.sync.call(this, method, model, options)
@@ -21,7 +23,9 @@
             # initialize
             if options.form
                 @options = options
+                # coffeelint: disable=max_line_length
                 @url = "#{ajaxurl}?action=ajax_settings_save_#{@options.options_name}"
+                # coffeelint: enable=max_line_length
                 if @options.url
                     @url = @options.url
 
